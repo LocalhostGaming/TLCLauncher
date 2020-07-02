@@ -1,0 +1,45 @@
+@import 'fonts.scss';
+
+html, body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6, p, a, img, span, button, div, svg, g, path {
+    -webkit-user-select: none;  /* Chrome 49+ */
+    -moz-user-select: none;     /* Firefox 43+ */
+    -ms-user-select: none;      /* No support yet */
+    user-select: none;          /* Likely future */   
+}
+
+a {
+    text-decoration: none;
+}
+
+div, input {
+    box-sizing: border-box;
+}
+
+input {
+    box-sizing: border-box;
+    font-family: 'Poppins';
+
+    &::selection {
+        background: colors(primary-light);
+    }
+}
+
+button {
+    box-sizing: border-box;
+    font-family: 'Poppins';
+    font-weight: 800;
+}
+
+svg {
+    outline: none;
+}
