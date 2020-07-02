@@ -9,9 +9,11 @@ axios.interceptors.request.use(
     window.getToken()
       .then((result) => {
         const token = result;
-        /* eslint-disable */
-        config.headers.Authorization = token ? `Bearer ${token}` : '';
-        /* eslint-enable */
+        if (token != null) {
+          /* eslint-disable */
+          config.headers.Authorization = token ? `Bearer ${token}` : '';
+          /* eslint-enable */
+        }
       });
 
     return config;

@@ -19,11 +19,16 @@ window.minimizeToTrayCurrentWindow = () => {
 
 window.setToken = (token) => {
   const tempPath = remote.app.getPath("temp");
-  const filePath = path.join(tempPath, 'token.txt')
+  const filePath = path.join(tempPath, 'tlc.json')
+
+  const data = {
+    userToken: token,
+    serverSession: null
+  }
 
   const promise = new Promise((resolve, reject) => {
     try {
-      fs.writeFileSync(filePath, token, 'utf-8');
+      fs.writeFileSync(filePath, JSON.stringify(data), 'utf-8');
       resolve('Successfully saved Token');
     } catch (e) {
       reject(e);
@@ -35,13 +40,15 @@ window.setToken = (token) => {
 
 window.getToken = () => {
   const tempPath = remote.app.getPath("temp");
-  const filePath = path.join(tempPath, 'token.txt')
+  const filePath = path.join(tempPath, 'tlc.json')
 
   const promise = new Promise((resolve, reject) => {
     if (fs.existsSync(filePath)) {
       try {
-        const token = fs.readFileSync(filePath, 'utf-8');
-        resolve(token);
+        const json = fs.readFileSync(filePath, 'utf-8');
+        const data = JSON.parse(json);
+        console.log(data);
+        resolve(data.userToken);
       } catch (e) {
         reject(e);
       }
@@ -53,11 +60,16 @@ window.getToken = () => {
 
 window.removeToken = () => {
   const tempPath = remote.app.getPath("temp");
-  const filePath = path.join(tempPath, 'token.txt')
+  const filePath = path.join(tempPath, 'tlc.json')
+
+  const data = {
+    userToken: null,
+    serverSession: null
+  }
 
   const promise = new Promise((resolve, reject) => {
     try {
-      fs.unlinkSync(filePath, 'utf-8');
+      fs.writeFileSync(filePath, JSON.stringify(data), 'utf-8');
       resolve('Successfully removed Token');
     } catch(e) {
       console.error(e);
