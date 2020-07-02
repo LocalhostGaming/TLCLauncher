@@ -28,12 +28,12 @@ function createWindow() {
     frame: false,
     transparent: true,
     webPreferences: {
-      // Use pluginOptions.nodeIntegration, leave this alone
-      // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       preload: path.join(__dirname, 'preload.js')
     }
   })
+
+  win.setMaximizable(false)
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -45,6 +45,7 @@ function createWindow() {
     win.loadURL('app://./index.html')
   }
 
+  // Add to System Tray
   win.on('hide', () => {
     tray = new Tray(ico)
 
@@ -63,6 +64,7 @@ function createWindow() {
         }
       }
     ])
+
     tray.setToolTip('TLC Launcher')
     tray.setContextMenu(contextMenu)
 
