@@ -47,7 +47,6 @@ window.getToken = () => {
       try {
         const json = fs.readFileSync(filePath, 'utf-8');
         const data = JSON.parse(json);
-        console.log(data);
         resolve(data.userToken);
       } catch (e) {
         reject(e);
