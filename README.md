@@ -1,4 +1,4 @@
-# launcher
+# The Lost City: Launcher
 
 ## Project setup
 ```
@@ -10,9 +10,19 @@ npm install
 npm run serve
 ```
 
+### Compiles and hot-reloads for electron js development
+```
+npm run electron:serve
+```
+
 ### Compiles and minifies for production
 ```
 npm run build
+```
+
+### Compiles and minifies for electron js production
+```
+npm run electron:build
 ```
 
 ### Run your tests
