@@ -8,7 +8,7 @@ module.exports = {
       builderOptions: {
         productName: 'TLC Launcher',
         win: {
-          icon: './src/icon.ico',
+          icon: './src/assets/extra/icon.ico',
         },
         extraResources: [
           {

@@ -26,7 +26,7 @@ export default {
 
 <style lang="scss" scoped>
 div.lost-checkbox{
-  display: flex;
+  display: inline-flex;
   cursor: pointer;
   color: color(light);
   font-size: 13px;

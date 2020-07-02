@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import auth from '@/utils/auth';
 
 export default {
   data: () => ({
@@ -105,6 +105,7 @@ export default {
         this.onLogin();
       }
     },
+
     onLogin() {
       this.currentPage = 'SIGN IN';
       this.option = 'Forgot your password?';
@@ -120,6 +121,7 @@ export default {
         password: '',
       };
     },
+
     onForgotPassword() {
       this.currentPage = 'FORGOT PASSWORD';
       this.option = 'Remember you password?';
@@ -132,6 +134,7 @@ export default {
         email: '',
       };
     },
+
     submitLogin() {
       this.onSubmit = true;
       this.clearAlerts();
@@ -141,37 +144,24 @@ export default {
         password: this.form.password,
       };
 
-      axios.post('https://dev-tlc-api.localhostgaming.com/api/sessions', data)
-        .then((response) => {
-          const userToken = response.data.token;
-
-          window.saveToken('token.txt', userToken)
-            .then(() => {
-              this.$emit('loggedIn');
-            })
-            .catch((error) => {
-              console.error(error);
-            });
+      auth.login(data)
+        .then(() => {
+          this.$emit('loggedIn');
         })
         .catch((error) => {
           this.onSubmit = false;
           this.handleErrors(error.response.data);
-          // this.alert.error = error.response.data.message;
         });
     },
+
     submitForgotPassword() {
       this.onSubmit = true;
       this.clearAlerts();
+      setTimeout(() => {
+        this.onSubmit = false;
+      }, 1000);
     },
-    validateForm() {
-      // const form = Object.keys(this.form);
 
-      // form.map((key) => {
-
-      //   console.log(key, obj[key]);
-
-      // });
-    },
     handleErrors(error) {
       if (error.details) {
         error.details.forEach((value) => {
@@ -184,6 +174,7 @@ export default {
         this.alert.error = error.message;
       }
     },
+
     clearAlerts() {
       this.alert.error = '';
       this.inputState = {};

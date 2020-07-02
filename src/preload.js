@@ -3,30 +3,29 @@ const { remote } = require('electron');
 const fs = require('fs');
 const path = require('path');
 
-let currWindow = remote.BrowserWindow.getFocusedWindow();
+const currWindow = remote.BrowserWindow.getFocusedWindow();
 
-window.closeCurrentWindow = function() {
+window.closeCurrentWindow = () => {
   currWindow.destroy();
 }
 
-window.minimizeCurrentWindow = function() {
+window.minimizeCurrentWindow = () => {
   currWindow.minimize();
 }
 
-window.minimizeToTrayCurrentWindow = function() {
+window.minimizeToTrayCurrentWindow = () => {
   currWindow.hide();
 }
 
-window.saveToken = (filename, token) => {
+window.setToken = (token) => {
   const tempPath = remote.app.getPath("temp");
-  const filePath = path.join(tempPath, filename)
+  const filePath = path.join(tempPath, 'token.txt')
 
   const promise = new Promise((resolve, reject) => {
     try {
       fs.writeFileSync(filePath, token, 'utf-8');
-      resolve(filePath);
-    } catch(e) {
-      console.error(e);
+      resolve('Successfully saved Token');
+    } catch (e) {
       reject(e);
     }
   })
@@ -34,31 +33,32 @@ window.saveToken = (filename, token) => {
   return promise;
 }
 
-window.readToken = (filename) => {
+window.getToken = () => {
   const tempPath = remote.app.getPath("temp");
-  const filePath = path.join(tempPath, filename)
+  const filePath = path.join(tempPath, 'token.txt')
 
   const promise = new Promise((resolve, reject) => {
-    try {
-      const token = fs.readFileSync(filePath, 'utf-8');
-      resolve(token);
-    } catch(e) {
-      console.error(e);
-      reject(e)
+    if (fs.existsSync(filePath)) {
+      try {
+        const token = fs.readFileSync(filePath, 'utf-8');
+        resolve(token);
+      } catch (e) {
+        reject(e);
+      }
     }
   })
 
   return promise;
 }
 
-window.removeToken = (filename) => {
+window.removeToken = () => {
   const tempPath = remote.app.getPath("temp");
-  const filePath = path.join(tempPath, filename)
+  const filePath = path.join(tempPath, 'token.txt')
 
   const promise = new Promise((resolve, reject) => {
     try {
       fs.unlinkSync(filePath, 'utf-8');
-      resolve(filePath);
+      resolve('Successfully removed Token');
     } catch(e) {
       console.error(e);
       reject(e);
@@ -66,5 +66,12 @@ window.removeToken = (filename) => {
   })
 
   return promise;
+}
+
+window.ERROR = (error) => {
+  console.error(error);
+}
+window.LOG = (log) => {
+  console.log(log);
 }
 

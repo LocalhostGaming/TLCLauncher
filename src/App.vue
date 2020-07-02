@@ -5,14 +5,14 @@
     <div class="container left">
       <!-- Username -->
       <transition name="fade">
-        <div class="user" v-if="user">
+        <div class="user" v-if="!auth">
           <lost-link class="signout error" @click="logout">SIGN OUT</lost-link>
         </div>
       </transition>
 
       <!-- Carousel -->
       <div class="slide" :style="`opacity: ${slideOpacity}`">
-        <lost-carousel :images="images" :start="carousel"></lost-carousel>
+        <lost-carousel :start="carousel"></lost-carousel>
       </div>
 
       <!-- Play Button -->
@@ -46,7 +46,7 @@
           </div>
 
           <!-- Form -->
-          <Auth v-if="auth" @loggedIn="login"></Auth>
+          <Auth v-if="auth" @loggedIn="checkUserSession"></Auth>
         </div>
       </div>
     </div>
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import user from '@/utils/user';
 
 import Auth from './components/Auth.vue';
 
@@ -92,29 +92,27 @@ export default {
     bottom: 0,
     slideOpacity: 0,
     playOpacity: 0,
-    transitioning: false,
-    images: [
-      '@/assets/img/slide/slide1.svg',
-    ],
     carousel: false,
-    auth: false,
     loadingStatus: 'Loading',
     user: null,
-    userToken: null,
+    auth: false,
   }),
   methods: {
     onAuth() {
+      this.auth = true;
       this.bottom = 0;
       this.slideOpacity = 0;
       this.playOpacity = 0;
       this.carousel = false;
-      this.auth = true;
-      this.user = null;
-      this.userToken = null;
+
+      setTimeout(() => {
+        this.user = null;
+      }, 500);
     },
+
     onPlay() {
       this.carousel = true;
-      this.bottom = -64;
+      this.bottom = -67;
       this.slideOpacity = 1;
 
       setTimeout(() => {
@@ -122,12 +120,14 @@ export default {
         this.auth = false;
       }, 700);
     },
-    login() {
-      this.checkUserToken()
-        .then((response) => {
-          this.user = response;
 
+    async checkUserSession() {
+      await user.me()
+        .then((response) => {
+          this.user = response.data;
           this.loadingStatus = 'Welcome';
+
+          // to show loading
           this.auth = false;
 
           setTimeout(() => {
@@ -135,116 +135,44 @@ export default {
           }, 2000);
         })
         .catch((error) => {
-          const status = error.statusCode;
-
-          if (status === 401) {
-            this.onAuth();
-          }
+          const status = error.response.data.statusCode;
+          if (status === 401) this.onAuth();
         });
     },
-    logout() {
-      window.removeToken('token.txt');
-      this.onAuth();
-    },
-    checkUserToken() {
-      const promise = new Promise((resolve, reject) => {
-        window.readToken('token.txt')
-          .then((token) => {
-            const config = {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            };
-            axios.get('https://dev-tlc-api.localhostgaming.com/api/users/me', config)
-              .then((response) => {
-                const res = response.data;
 
-                resolve(res);
-              })
-              .catch((error) => {
-                const err = error.response.data;
-
-                reject(err);
-              });
-          })
-          .catch(() => {
-            this.onAuth();
-          });
-      });
-
-      return promise;
-    },
     connectToServer() {
-      if (!this.user) {
-        this.onAuth();
-        return;
+      try {
+        this.checkUserSession();
+      } catch (e) {
+        window.ERROR(e);
       }
 
-      this.checkUserToken()
+      if (this.user) {
+        window.location.href = 'fivem://connect/rp.localhostgaming.com';
+        window.minimizeToTrayCurrentWindow();
+      }
+    },
+
+    async logout() {
+      await user.logout()
         .then(() => {
-          window.location.href = 'fivem://connect/rp.localhostgaming.com';
-          window.minimizeToTrayCurrentWindow();
+          this.onAuth();
         })
         .catch((error) => {
-          const status = error.statusCode;
-
-          if (status === 401) {
-            this.onAuth();
-          }
+          window.ERROR(error);
         });
     },
+
     minimizeWindow() {
       window.minimizeCurrentWindow();
-      // this.read();
     },
+
     closeWindow() {
       window.closeCurrentWindow();
     },
-    read() {
-      window.readToken('token.txt')
-        .then((res) => {
-          console.log(res);
-        });
-    },
-    write() {
-      window.saveToken('token.txt', 'asd-tesssst')
-        .then((res) => {
-          console.log(res);
-        });
-    },
-    register() {
-      // const token = '';
-      // const config = {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // };
-
-      // const data = {
-      //   username: 'blood',
-      //   // email: 'davidperalta16@gmail.com',
-      //   password: 'password',
-      // };
-
-      // const citizen = {
-      //   citizen: {
-      //     firstName: 'Primo',
-      //     lastName: 'Shelby',
-      //     dob: '1995-07-01',
-      //     height: 160,
-      //     gender: 'Male',
-      //   },
-      // };
-
-      // axios.patch('https://dev-tlc-api.localhostgaming.com/api/users/me', citizen, config)
-      //   .then((response) => {
-      //     console.log(response);
-      //   });
-    },
   },
   mounted() {
-    // this.register();
-    this.login();
+    this.checkUserSession();
   },
 };
 </script>
@@ -381,7 +309,7 @@ export default {
             height: 50%;
             color: darken(color(text), 10%);
             display: flex;
-            font-size: 13px;
+            font-size: 14px;
 
             .wrapper {
               margin: 0 auto;
@@ -501,7 +429,7 @@ export default {
         font-family: 'Poppins';
 
         span {
-          font-size: 14px;
+          font-size: 13px;
           font-family: 'Ubuntu';
           color: lighten(color(disabled), 20%);
           font-weight: 600;
@@ -512,7 +440,7 @@ export default {
 
   .fade-enter-active {
     transition: opacity .5s;
-    transition-delay: 3s;
+    transition-delay: 0.8s;
   }
   .fade-leave-active {
     transition: opacity .5s;
