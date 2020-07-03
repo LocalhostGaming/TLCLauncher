@@ -4,11 +4,9 @@
     <!-- Left Container -->
     <div class="container left">
       <!-- Username -->
-      <transition name="fade">
-        <div class="user" v-if="!auth">
-          <lost-link class="signout error" @click="logout">SIGN OUT</lost-link>
-        </div>
-      </transition>
+      <div class="user" v-if="!auth" :style="`opacity: ${playOpacity};`">
+        <lost-link class="signout error" @click="logout">SIGN OUT</lost-link>
+      </div>
 
       <!-- Carousel -->
       <div class="slide" :style="`opacity: ${slideOpacity}`">
@@ -205,6 +203,7 @@ export default {
         top: 6px;
         z-index: 1;
         font-size: 13px;
+        transition: opacity 0.5s ease-in-out;
 
         .signout {
           color: color(text);
