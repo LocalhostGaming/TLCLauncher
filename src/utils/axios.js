@@ -14,6 +14,9 @@ axios.interceptors.request.use(
           config.headers.Authorization = token ? `Bearer ${token}` : '';
           /* eslint-enable */
         }
+      })
+      .catch((error) => {
+        window.ERROR(error);
       });
 
     return config;

@@ -35,16 +35,49 @@
             <img class="logo" src="@/assets/img/logo.svg" svg-inline alt="city">
           </div>
 
-          <div class="loading-status" v-if="!auth">
-            <div class="wrapper">
-              <p>{{loadingStatus}}</p>
-              <p class="username" v-if="user">{{user.username}}</p>
-              <img src="@/assets/img/three-dots.svg" svg-inline alt="">
-            </div>
-          </div>
+          <transition-group name="fade">
+            <div class="loading-status" v-if="!auth" key="1">
+              <div class="wrapper">
 
-          <!-- Form -->
-          <Auth v-if="auth" @loggedIn="checkUserSession"></Auth>
+                <!-- Discord Alert -->
+                <div v-if="discord.alert">
+                  <lost-alert  class="warning alert" title="WARNING">
+                    {{discord.alert}}
+                  </lost-alert>
+                  <div class="alert-options">
+                    <!-- Link to Discord Button -->
+                    <lost-button
+                    class="info small"
+                    @click="linkDiscord"
+                    :disabled="loading.logout">
+                    LINK NOW
+                    </lost-button>
+                    <!-- Logout Button -->
+                    <lost-button
+                      class="error small"
+                      @click="logout"
+                      :loading="loading.logout">
+                      SIGN OUT
+                    </lost-button>
+                  </div>
+                </div>
+
+                <!-- Welcome User -->
+                <p v-if="!discord.alert || loading.discord">{{loadingStatus}}</p>
+                <div v-if="!discord.alert">
+                  <p class="username" v-if="user">{{user.username}}</p>
+                </div>
+                <img
+                  v-if="!discord.alert || loading.discord"
+                  src="@/assets/img/three-dots.svg"
+                  svg-inline
+                  alt="">
+              </div>
+            </div>
+
+            <!-- Form -->
+            <Auth v-if="auth" @loggedIn="checkUserSession" key="2"></Auth>
+          </transition-group>
         </div>
       </div>
     </div>
@@ -77,6 +110,7 @@
 
 <script>
 import user from '@/utils/user';
+import discord from '@/utils/discord';
 
 import Auth from './components/Auth.vue';
 
@@ -94,6 +128,17 @@ export default {
     loadingStatus: 'Loading',
     user: null,
     auth: false,
+
+    discord: {
+      alert: null,
+    },
+
+    loading: {
+      logout: false,
+      discord: false,
+    },
+
+    listener: null,
   }),
   methods: {
     onAuth() {
@@ -122,15 +167,24 @@ export default {
     async checkUserSession() {
       await user.me()
         .then((response) => {
-          this.user = response.data;
-          this.loadingStatus = 'Welcome';
-
           // to show loading
           this.auth = false;
 
-          setTimeout(() => {
-            this.onPlay();
-          }, 2000);
+          // Check if there is discord account linked
+          discord.me()
+            .then(() => {
+              this.user = response.data;
+              this.loadingStatus = 'Welcome';
+
+              setTimeout(() => {
+                this.onPlay();
+              }, 2000);
+            })
+            .catch((err) => {
+              if (err.response.data.statusCode === 404) {
+                this.discord.alert = 'You need to link your Discord Account first.';
+              }
+            });
         })
         .catch((error) => {
           const status = error.response.data.statusCode;
@@ -146,18 +200,44 @@ export default {
       }
 
       if (this.user) {
-        window.location.href = 'fivem://connect/rp.localhostgaming.com';
-        window.minimizeToTrayCurrentWindow();
+        user.play()
+          .then((response) => {
+            window.LOG(response);
+            window.location.href = 'fivem://connect/rp.localhostgaming.com';
+            window.minimizeToTrayCurrentWindow();
+          })
+          .catch((error) => {
+            window.ERROR(error);
+          });
       }
     },
 
-    async logout() {
-      await user.logout()
-        .then(() => {
-          this.onAuth();
+    linkDiscord() {
+      this.loadingStatus = 'Waiting for Discord Authorization';
+      this.discord.alert = false;
+      this.loading.discord = true;
+
+      discord.requestAuthorization()
+        .then((response) => {
+          const { url } = response.data;
+          window.openExternalBrowser(url);
         })
         .catch((error) => {
           window.ERROR(error);
+        });
+    },
+
+    async logout() {
+      this.loading.logout = true;
+
+      await user.logout()
+        .then(() => {
+          this.onAuth();
+          this.loading.logout = false;
+        })
+        .catch((error) => {
+          window.ERROR(error);
+          this.loading.logout = false;
         });
     },
 
@@ -171,6 +251,16 @@ export default {
   },
   mounted() {
     this.checkUserSession();
+
+    const listener = window.addEventListener('discord', () => {
+      this.loadingStatus = 'Logging in your Account';
+      this.checkUserSession();
+    });
+
+    this.listener = listener;
+  },
+  destroyed() {
+    window.removeEventListener('discord', this.listener, false);
   },
 };
 </script>
@@ -312,7 +402,30 @@ export default {
 
             .wrapper {
               margin: 0 auto;
+              padding: 0 4em;
               align-self: center;
+
+              .alert {
+                text-align: left;
+                width: 100%;
+              }
+
+              .alert-options {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+
+                button {
+                  width: 48.5%;
+
+                  .info {
+                    margin-right: 4px;
+                  }
+                  .error {
+                    margin-left: 4px;
+                  }
+                }
+              }
 
               .username {
                 font-weight: 600;

@@ -3,6 +3,8 @@ const { remote } = require('electron');
 const fs = require('fs');
 const path = require('path');
 
+import discord from '@/utils/discord';
+
 const currWindow = remote.BrowserWindow.getFocusedWindow();
 
 window.closeCurrentWindow = () => {
@@ -22,8 +24,7 @@ window.setToken = (token) => {
   const filePath = path.join(tempPath, 'tlc.json')
 
   const data = {
-    userToken: token,
-    serverSession: null
+    userToken: token
   }
 
   const promise = new Promise((resolve, reject) => {
@@ -86,3 +87,44 @@ window.LOG = (log) => {
   console.log(log);
 }
 
+window.openExternalBrowser = (url) => {
+  remote.shell.openExternal(url)
+}
+
+// -- EVENTS
+remote.app.on('second-instance', (event, CommandLine, workingDirectory) => {
+  const commandLine = CommandLine;
+
+  currWindow.focus()
+
+  const url = commandLine.filter((value) => {
+    const arr = value.split(':');
+    if (arr[0] === 'lostlauncher') {
+      return value;
+    }
+  })
+
+  if (url.length != 0) {
+    const params = getParams(url[0])
+    discord.createAuthorization(params)
+      .then(() => {
+        discord.success()
+      })
+      .catch((error) => {
+        window.ERROR(error)
+      })
+  }
+})
+
+const getParams = (url) => {
+	let params = {};
+	let parser = document.createElement('a');
+	parser.href = url;
+	let query = parser.search.substring(1);
+	let vars = query.split('&');
+	for (let i = 0; i < vars.length; i++) {
+		let pair = vars[i].split('=');
+		params[pair[0]] = decodeURIComponent(pair[1]);
+	}
+	return params;
+};

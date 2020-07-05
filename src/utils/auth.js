@@ -4,8 +4,8 @@ export default {
   async login(data) {
     const result = await axios.post('sessions', data);
 
-    const userToken = result.data.token;
-    window.setToken(userToken);
+    const { token } = result.data;
+    window.setToken(token);
 
     return result;
   },
