@@ -19,7 +19,11 @@
 <script>
 export default {
   props: {
-    state: Object,
+    state: {
+      type: Object,
+      required: false,
+      default: null,
+    },
     password: Boolean,
     disabled: Boolean,
     placeholder: String,
