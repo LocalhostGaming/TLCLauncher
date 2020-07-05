@@ -1,5 +1,5 @@
 <template>
-  <p :class="`lost-link ${disabled ? 'disabled' : ''} ${type}`" v-on:click="clicked">
+  <p :class="`lost-link ${disabled ? ' disabled' : ''} ${type}`" v-on:click="clicked">
     <span>
       <slot></slot>
     </span>
@@ -36,9 +36,17 @@ p.lost-link {
     cursor: pointer;
   }
 
-  &.disabled {
+  &.disabled span{
     color: color(disabled) !important;
     cursor: default;
+
+    &:hover {
+      color: color(disabled) !important
+    }
+
+    &:active {
+      color: color(disabled) !important
+    }
   }
 
   &.primary span{
