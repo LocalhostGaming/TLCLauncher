@@ -6,7 +6,7 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
-const singleAppLock = app.requestSingleInstanceLock()
+const primaryInstance = app.requestSingleInstanceLock()
 
 const path = require('path')
 const imageIcon = path.join(path.dirname(__dirname), 'extra','icon.ico');
@@ -88,51 +88,69 @@ function createWindow() {
   })
 }
 
-if(!singleAppLock) {
+if (!primaryInstance) {
   app.quit();
 } else {
-  app.on('second-instance', (event, commandLine, workingDirectory) => {
-    // Someone tried to run a second instance, we should focus our window.
-    if (win) {
-      if (win.isMinimized()) win.restore()
-      win.focus()
-    }
-  })
 
-  // Quit when all windows are closed.
-  app.on('window-all-closed', () => {
-    // On macOS it is common for applications and their menu bar
-    // to stay active until the user quits explicitly with Cmd + Q
-    if (process.platform !== 'darwin') {
-      app.quit()
-    }
-  })
+app.on('second-instance', (event, commandLine, workingDirectory) => {
+  // Someone tried to run a second instance, we should focus our window.
+  if (win) {
+    if (win.isMinimized()) win.restore()
+    win.focus()
+  }
+})
 
-  app.on('activate', () => {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (win === null) {
-      createWindow()
-    }
+app.on('session-created', (session) => {
+  console.log(session)
+})
 
-  })
+// Quit when all windows are closed.
+app.on('window-all-closed', () => {
+  // On macOS it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
 
-  // This method will be called when Electron has finished
-  // initialization and is ready to create browser windows.
-  // Some APIs can only be used after this event occurs.
-  app.on('ready', async () => {
-    if (isDevelopment && !process.env.IS_TEST) {
-      // Install Vue Devtools
-      try {
-        await installExtension(VUEJS_DEVTOOLS)
-      } catch (e) {
-        console.error('Vue Devtools failed to install:', e.toString())
-      }
-    }
-
+app.on('activate', () => {
+  // On macOS it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (win === null) {
     createWindow()
-  })
+  }
+
+})
+
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+app.on('ready', async () => {
+  if (isDevelopment && !process.env.IS_TEST) {
+    // Install Vue Devtools
+    try {
+      await installExtension(VUEJS_DEVTOOLS)
+    } catch (e) {
+      console.error('Vue Devtools failed to install:', e.toString())
+    }
+  }
+
+  createWindow()
+})
+
+// remove so we can register each time as we run the app.
+app.removeAsDefaultProtocolClient('lostlauncher');
+
+// If we are running a non-packaged version of the app && on windows
+if(isDevelopment) {
+  // Set the path of electron.exe and your app.
+  // These two additional parameters are only available on windows.
+  app.setAsDefaultProtocolClient('lostlauncher', process.execPath, [path.resolve(process.argv[1])]);
+} else {
+  app.setAsDefaultProtocolClient('lostlauncher');
 }
+
+};
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {

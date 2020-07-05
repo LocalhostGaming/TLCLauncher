@@ -19,6 +19,13 @@ module.exports = {
             ],
           },
         ],
+        protocols: {
+          name: 'lostlauncher',
+          schemes: [
+            'lostlauncher',
+            'app',
+          ],
+        },
       },
     },
   },
