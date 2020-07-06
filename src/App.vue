@@ -97,9 +97,11 @@
       </div>
 
       <!-- Background Overlay -->
-      <div class="bg-overlay">
+      <!-- <div class="bg-overlay">
         <img src="@/assets/img/text-bg.svg" svg-inline alt="">
-      </div>
+      </div> -->
+
+      <Blogs></Blogs>
 
       <!-- Credits -->
       <p>Powered by <span>LOCALHOST GAMING</span></p>
@@ -113,11 +115,13 @@ import user from '@/utils/user';
 import discord from '@/utils/discord';
 
 import Auth from './components/Auth.vue';
+import Blogs from './components/Blogs.vue';
 
 export default {
   name: 'App',
   components: {
     Auth,
+    Blogs,
   },
   data: () => ({
     enabled: true,
@@ -237,11 +241,11 @@ export default {
     },
 
     async logout() {
+      this.onAuth();
       this.loading.logout = true;
 
       await user.logout()
         .then(() => {
-          this.onAuth();
           this.loading.logout = false;
         })
         .catch((error) => {

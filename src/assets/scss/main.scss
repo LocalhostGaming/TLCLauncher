@@ -15,7 +15,13 @@ h1, h2, h3, h4, h5, h6, p, a, img, span, button, div, svg, g, path {
     -webkit-user-select: none;  /* Chrome 49+ */
     -moz-user-select: none;     /* Firefox 43+ */
     -ms-user-select: none;      /* No support yet */
-    user-select: none;          /* Likely future */   
+    user-select: none;          /* Likely future */ 
+}
+
+ul, li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 a {
