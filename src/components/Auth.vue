@@ -272,8 +272,8 @@ export default {
         });
     },
 
-    startResetCodeTimer() {
-      this.timer = setInterval(() => {
+    async startResetCodeTimer() {
+      this.timer = await setInterval(() => {
         if (this.resendTime !== 0) {
           this.resendTime -= 1;
         }

@@ -3,9 +3,17 @@ const { remote } = require('electron');
 const fs = require('fs');
 const path = require('path');
 
+const psList = require('ps-list');
+
 import discord from '@/utils/discord';
 
 const currWindow = remote.BrowserWindow.getFocusedWindow();
+
+window.showCurrentWindow = (interval) => {
+  clearInterval(interval)
+  currWindow.show();
+  currWindow.focus();
+}
 
 window.closeCurrentWindow = () => {
   currWindow.destroy();
@@ -89,6 +97,29 @@ window.LOG = (log) => {
 
 window.openExternalBrowser = (url) => {
   remote.shell.openExternal(url)
+}
+
+window.fivemProcess = async () => {
+
+  const result = await psList()
+    .then((result) => {
+      const fivem = result.filter((value) => {
+        if(value.name === 'FiveM.exe') {
+          const data = {
+            pid: value.pid,
+            name: value.name,
+          };
+
+          return data;
+        }
+      })
+      return fivem;
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+
+  return result;
 }
 
 // -- EVENTS

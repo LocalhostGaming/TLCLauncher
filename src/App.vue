@@ -139,6 +139,7 @@ export default {
     },
 
     listener: null,
+    process: null,
   }),
   methods: {
     onAuth() {
@@ -201,10 +202,18 @@ export default {
 
       if (this.user) {
         user.play()
-          .then((response) => {
-            window.LOG(response);
+          .then(() => {
             window.location.href = 'fivem://connect/rp.localhostgaming.com';
             window.minimizeToTrayCurrentWindow();
+
+            this.process = setInterval(() => {
+              window.fivemProcess()
+                .then((result) => {
+                  if (result.length === 0) {
+                    window.showCurrentWindow(this.process);
+                  }
+                });
+            }, 1000);
           })
           .catch((error) => {
             window.ERROR(error);
@@ -270,7 +279,8 @@ export default {
   font-family: 'Poppins';
   display: inline-flex;
   background: color(dark);
-  border-radius: 8px;
+  /* border-radius: 8px; */
+  background: color(dark);
   width: 100vw;
   height: 100vh;
   -webkit-app-region: drag;
@@ -284,7 +294,7 @@ export default {
       background: color(primary);
       margin: 12px 6px 12px 12px;
       overflow: hidden;
-      border-radius: 6px 6px 0 0;
+      /* border-radius: 6px 6px 0 0; */
       -webkit-app-region: no-drag;
 
       .user {
@@ -450,7 +460,7 @@ export default {
         right: 0;
         top:  0;
         display: flex;
-        border-radius: 0 6px 0 0;
+        /* border-radius: 0 6px 0 0; */
         overflow: hidden;
         z-index: 1;
         -webkit-app-region: no-drag;
