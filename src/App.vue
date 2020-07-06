@@ -97,11 +97,11 @@
       </div>
 
       <!-- Background Overlay -->
-      <!-- <div class="bg-overlay">
+      <div class="bg-overlay" v-if="!devBlogs">
         <img src="@/assets/img/text-bg.svg" svg-inline alt="">
-      </div> -->
+      </div>
 
-      <Blogs></Blogs>
+      <Blogs v-if="devBlogs"></Blogs>
 
       <!-- Credits -->
       <p>Powered by <span>LOCALHOST GAMING</span></p>
@@ -125,6 +125,7 @@ export default {
   },
   data: () => ({
     enabled: true,
+    devBlogs: false,
     bottom: 0,
     slideOpacity: 0,
     playOpacity: 0,
