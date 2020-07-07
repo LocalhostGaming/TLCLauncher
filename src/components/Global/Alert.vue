@@ -1,9 +1,9 @@
 <template>
   <div :class="`lost-alert ${type}`">
     <p class="title" v-if="title">{{title}}</p>
-    <span>
+    <p>
       <slot></slot>
-    </span>
+    </p>
   </div>
 </template>
 
@@ -38,7 +38,7 @@ div.lost-alert{
     margin-top: 4px;
   }
 
-  span {
+  p {
     font-size: 12px;
   }
 

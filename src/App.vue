@@ -129,7 +129,7 @@ export default {
   },
   data: () => ({
     enabled: true,
-    devBlogs: true,
+    devBlogs: false,
     bottom: 0,
     slideOpacity: 0,
     playOpacity: 0,
