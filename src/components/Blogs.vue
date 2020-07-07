@@ -1,102 +1,125 @@
 <template>
-  <div class="blogs">
-    <!-- Title -->
-    <div class="header">
-      <p>DEV BLOGS</p>
-      <!-- Shadow -->
-      <span>DEV BLOGS</span>
-    </div>
+  <transition name="fade">
+    <div class="blogs" v-if="devBlogs">
+      <!-- Title -->
+      <div class="header">
+        <p>DEV BLOGS</p>
+        <!-- Shadow -->
+        <!-- <span>DEV BLOGS</span> -->
+      </div>
 
-    <ul class="lists">
-      <li class="blog" v-for="(blog, index) in blogs" :key="index">
+      <ul class="lists">
+        <li class="blog" v-for="(blog, index) in devBlogs" :key="index">
 
-        <!-- Main Blog -->
-        <div class="main" v-if="index === 0" @click="openUrl(blog.url)">
+          <!-- Main Blog -->
+          <div class="main" v-if="index === 0" @click="openUrl(blog.url)">
 
-          <!-- Image -->
-          <div class="image">
-            <img :src="require(`@/assets/img/blogs/${blog.image}.jpg`)" alt="">
-          </div>
+            <!-- Image -->
+            <div class="image">
+              <img :src="require(`@/assets/img/blogs/${blog.image}.jpg`)" alt="">
+            </div>
 
-          <div class="title">
-             <!-- Title -->
-            <h2>{{blog.title.toUpperCase()}}</h2>
+            <div class="title">
+              <!-- Title -->
+              <h2>{{blog.title.toUpperCase()}}</h2>
 
-            <!-- Date -->
-            <span>{{blog.date}}</span>
-          </div>
-
-          <!-- Description -->
-          <p class="description">{{blog.description}}</p>
-        </div>
-
-        <!-- Recent Blogs -->
-        <div class="secondary" v-if="index > 0" @click="openUrl(blog.url)">
-
-          <!-- Image -->
-          <div class="image">
-            <img :src="require(`@/assets/img/blogs/${blog.image}.jpg`)" alt="">
-          </div>
-
-          <div class="info">
-            <!-- Title -->
-            <h2>{{blog.title.toUpperCase()}}</h2>
-
-            <!-- Date -->
-            <span>{{blog.date}}</span>
+              <!-- Date -->
+              <span>{{blog.date}}</span>
+            </div>
 
             <!-- Description -->
-            <p>{{blog.description}}</p>
+            <p class="description">{{blog.description}}</p>
           </div>
-        </div>
-      </li>
-    </ul>
 
-    <div class="read-more">
-      <lost-link class="primary" @click="openUrl('https://localhostgaming.com')">Read More</lost-link>
+          <!-- Recent Blogs -->
+          <div class="secondary" v-if="index > 0" @click="openUrl(blog.url)">
+
+            <!-- Image -->
+            <div class="image">
+              <img :src="require(`@/assets/img/blogs/${blog.image}.jpg`)" alt="">
+            </div>
+
+            <div class="info">
+              <!-- Title -->
+              <h2>{{blog.title.toUpperCase()}}</h2>
+
+              <!-- Date -->
+              <span>{{blog.date}}</span>
+
+              <!-- Description -->
+              <p>{{blog.description}}</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <div class="read-more">
+        <lost-link class="primary" @click="openUrl('https://localhostgaming.com')">Read More</lost-link>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
+import blogs from '@/utils/blogs';
+
 export default {
   name: 'Blogs',
   data: () => ({
-    blogs: [
-      {
-        title: 'Lorem Ipsum',
-        date: 'April 20, 1998',
-        description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-        image: '1',
-        url: 'https://localhostgaming.com',
-      },
-      {
-        title: 'Lorem Ipsum',
-        date: 'April 20, 1998',
-        description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing  has been the industry\'s',
-        image: '2',
-        url: 'https://localhostgaming.com',
-      },
-      {
-        title: 'Lorem Ipsum',
-        date: 'April 20, 1998',
-        description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing  has been the industry\'s',
-        image: '3',
-        url: 'https://localhostgaming.com',
-      },
-      {
-        title: 'Lorem Ipsum',
-        date: 'April 20, 1998',
-        description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing  has been the industry\'s',
-        image: '4',
-        url: 'https://localhostgaming.com',
-      },
-    ],
+    devBlogs: null,
+    testDevBlogs: null,
   }),
   methods: {
     openUrl(url) {
       window.openExternalBrowser(url);
     },
+    getBlogs() {
+      blogs.get()
+        .then((response) => {
+          this.$emit('blogs', true);
+          const { data } = response;
+
+          this.devBlogs = data;
+        })
+        .catch((error) => {
+          this.$emit('blogs', false);
+          if (error) {
+            this.testDevBlogs = [
+              {
+                title: 'Lorem Ipsum',
+                date: 'April 20, 1998',
+                description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry',
+                image: '1',
+                url: 'https://localhostgaming.com',
+              },
+              {
+                title: 'Lorem Ipsum',
+                date: 'April 20, 1998',
+                description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing  has been the industry\'s',
+                image: '2',
+                url: 'https://localhostgaming.com',
+              },
+              {
+                title: 'Lorem Ipsum',
+                date: 'April 20, 1998',
+                description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing  has been the industry\'s',
+                image: '3',
+                url: 'https://localhostgaming.com',
+              },
+              {
+                title: 'Lorem Ipsum',
+                date: 'April 20, 1998',
+                description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing  has been the industry\'s',
+                image: '4',
+                url: 'https://localhostgaming.com',
+              },
+            ];
+          }
+        });
+    },
+  },
+  created() {
+    this.getBlogs();
   },
 };
 </script>
@@ -274,5 +297,15 @@ export default {
 
       }
     }
+  }
+
+  .fade-enter-active {
+    transition: opacity .5s;
+  }
+  .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
   }
 </style>

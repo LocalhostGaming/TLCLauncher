@@ -1,7 +1,7 @@
 <template>
   <div id="app" v-if="enabled">
 
-    <div class="bg-overlay2" v-if="!devBlogs">
+    <div class="bg-overlay2" v-if="devBlogs">
       <img src="@/assets/img/text-bg2.svg" svg-inline alt="">
     </div>
 
@@ -101,11 +101,11 @@
       </div>
 
       <!-- Background Overlay -->
-      <!-- <div class="bg-overlay" v-if="!devBlogs">
+      <div class="bg-overlay" v-if="!devBlogs">
         <img src="@/assets/img/text-bg2.svg" svg-inline alt="">
-      </div> -->
+      </div>
 
-      <Blogs v-if="devBlogs"></Blogs>
+      <Blogs @blogs="onDevBlogs"></Blogs>
 
       <!-- Credits -->
       <p>Powered by <span>LOCALHOST GAMING</span></p>
@@ -248,6 +248,7 @@ export default {
     async logout() {
       this.onAuth();
       this.loading.logout = true;
+      this.loadingStatus = 'Loading';
 
       await user.logout()
         .then(() => {
@@ -257,6 +258,10 @@ export default {
           window.ERROR(error);
           this.loading.logout = false;
         });
+    },
+
+    onDevBlogs(value) {
+      this.devBlogs = value;
     },
 
     minimizeWindow() {
@@ -304,6 +309,7 @@ export default {
     flex-flow: column;
     align-items: center;
     justify-content: center;
+    opacity: 0.4;
 
     svg {
       width: 120%;
