@@ -73,15 +73,22 @@ export default {
       {
         title: 'Lorem Ipsum',
         date: 'April 20, 1998',
-        description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry',
+        description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing  has been the industry\'s',
         image: '2',
         url: 'https://localhostgaming.com',
       },
       {
         title: 'Lorem Ipsum',
         date: 'April 20, 1998',
-        description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry',
+        description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing  has been the industry\'s',
         image: '3',
+        url: 'https://localhostgaming.com',
+      },
+      {
+        title: 'Lorem Ipsum',
+        date: 'April 20, 1998',
+        description: 'What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing  has been the industry\'s',
+        image: '4',
         url: 'https://localhostgaming.com',
       },
     ],
@@ -98,15 +105,14 @@ export default {
   .blogs {
     height: 100%;
     width: 100%;
-    padding: 0 12px;
-    padding-top: 48px;
+    padding: 0 18px;
+    padding-top: 24px;
     /* background: color(dark-lighter); */
 
     .read-more {
       -webkit-app-region: no-drag;
       width: 100%;
-      padding: 4px 8px;
-      text-align: center;
+      padding: 0 8px;
 
       p {
         display: block;
@@ -115,7 +121,7 @@ export default {
       span {
         color: lighten(color(disabled), 5%);
         font-size: 14px;
-        letter-spacing: 1px;
+        /* letter-spacing: 1px; */
       }
     }
 
@@ -133,7 +139,7 @@ export default {
       p {
         font-weight: 600;
         position: absolute;
-        font-size: 20px;
+        font-size: 22px;
         bottom: 0;
         z-index: 1;
       }
@@ -146,16 +152,15 @@ export default {
     }
 
     .lists {
-      margin-top: 18px;
+      margin-top: 8px;
       -webkit-app-region: no-drag;
 
       .blog {
         position: relative;
 
         .main {
-          margin-bottom: 8px;
-          padding: 8px;
-          border-radius: 4px;
+          padding: 6px;
+          border-radius: 2px;
           cursor: pointer;
           transition: background 0.2s;
 
@@ -170,7 +175,7 @@ export default {
           .image {
             height: 100px;
             overflow: hidden;
-            border-radius: 4px;
+            border-radius: 2px;
 
             img {
               width: 100%;
@@ -183,7 +188,7 @@ export default {
             display: flex;
 
             h2 {
-              font-size: 18px;
+              font-size: 16px;
               color: color(primary);
             }
 
@@ -198,18 +203,17 @@ export default {
           .description {
             color: color(text);
             font-size: 14px;
-            font-weight: 300;
+            font-weight: 200;
             line-height: 1.3;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
           }
         }
 
         .secondary {
-          margin-bottom: 8px;
+          margin-bottom: 4px;
           display: flex;
-          height: 104px;
-          padding: 8px;
-          border-radius: 4px;
+          padding: 6px;
+          border-radius: 2px;
           cursor: pointer;
 
           transition: background 0.2s;
@@ -224,10 +228,10 @@ export default {
 
           .image {
             width: 80px;
-            height: 100%;
+            height: 80px;
             overflow: hidden;
             background-size: cover;
-            border-radius: 4px;
+            border-radius: 2px;
             display: flex;
             flex-flow: column;
             align-items: center;
@@ -245,7 +249,7 @@ export default {
             margin-left: 12px;
 
             h2 {
-              font-size: 16px;
+              font-size: 14px;
               color: color(primary);
               line-height: 1;
               display: block;
@@ -253,15 +257,17 @@ export default {
 
             span {
               display: block;
-              font-size: 12px;
+              font-size: 11px;
               color: color(disabled);
             }
 
             p {
+              font-weight: 200;
               margin-top: 4px;
               color: color(text);
               font-size: 13px;
               line-height: 1.3;
+              letter-spacing: 0.8px;
             }
           }
         }

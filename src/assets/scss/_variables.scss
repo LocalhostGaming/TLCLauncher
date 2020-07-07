@@ -9,7 +9,7 @@ $colors: (
     dark-lighter: rgb(59, 59, 59),
     light: rgb(243, 243, 243),
     disabled: rgb(173, 173, 173),
-    text: rgb(243, 243, 243)
+    text: rgb(243, 243, 243),
 );
 
 @function color($color-name) {

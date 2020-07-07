@@ -1,6 +1,10 @@
 <template>
   <div id="app" v-if="enabled">
 
+    <div class="bg-overlay2" v-if="!devBlogs">
+      <img src="@/assets/img/text-bg2.svg" svg-inline alt="">
+    </div>
+
     <!-- Left Container -->
     <div class="container left">
       <!-- Username -->
@@ -97,9 +101,9 @@
       </div>
 
       <!-- Background Overlay -->
-      <div class="bg-overlay" v-if="!devBlogs">
-        <img src="@/assets/img/text-bg.svg" svg-inline alt="">
-      </div>
+      <!-- <div class="bg-overlay" v-if="!devBlogs">
+        <img src="@/assets/img/text-bg2.svg" svg-inline alt="">
+      </div> -->
 
       <Blogs v-if="devBlogs"></Blogs>
 
@@ -125,7 +129,7 @@ export default {
   },
   data: () => ({
     enabled: true,
-    devBlogs: false,
+    devBlogs: true,
     bottom: 0,
     slideOpacity: 0,
     playOpacity: 0,
@@ -283,12 +287,32 @@ export default {
 #app {
   font-family: 'Poppins';
   display: inline-flex;
-  background: color(dark);
   /* border-radius: 8px; */
+  background: lighten(color(dark), 0.5%);
   background: color(dark);
   width: 100vw;
   height: 100vh;
+
   -webkit-app-region: drag;
+
+  .bg-overlay2 {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 120%;
+      height: 105%;
+      outline: none;
+      position: absolute;
+      margin-right: 50px;
+    }
+  }
 
   .container {
     width: size(containerWidth);
@@ -299,7 +323,7 @@ export default {
       background: color(primary);
       margin: 12px 6px 12px 12px;
       overflow: hidden;
-      /* border-radius: 6px 6px 0 0; */
+      border-radius: 2px 2px 0 0;
       -webkit-app-region: no-drag;
 
       .user {
@@ -461,11 +485,12 @@ export default {
       margin: 12px 12px 12px 6px;
 
       .title-bar-buttons {
+        background: color(dark-lighter);
         position: absolute;
         right: 0;
         top:  0;
         display: flex;
-        /* border-radius: 0 6px 0 0; */
+        border-radius: 2px;
         overflow: hidden;
         z-index: 1;
         -webkit-app-region: no-drag;
@@ -533,11 +558,21 @@ export default {
       }
 
       .bg-overlay {
+        width: size(containerWidth);
+        height: size(containerHeight);
+        overflow: hidden;
+        position: absolute;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+
         svg {
           width: auto;
           height: 100%;
           outline: none;
           position: absolute;
+          margin-left: 20px;
         }
       }
 
