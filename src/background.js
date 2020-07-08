@@ -19,8 +19,6 @@ const ico = nativeImage.createFromPath(imageIcon);
 let launcherWindow = null;
 let launcherTray = null;
 
-console.log = console.info;
-
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged(
   [
@@ -142,7 +140,7 @@ if (!primaryInstance) {
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   app.on('ready', async () => {
-    if (isDevelopment) {
+    if (isDevelopment && !process.env.IS_TEST) {
       // Install Vue Devtools
       try {
         await installExtension(VUEJS_DEVTOOLS);

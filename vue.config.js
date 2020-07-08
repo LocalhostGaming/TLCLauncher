@@ -6,7 +6,7 @@ module.exports = {
       preload: 'src/preload.js',
       nodeModulesPath: ['../../node_modules', './node_modules'],
       builderOptions: {
-        productName: 'TLC Launcher',
+        productName: process.env.VUE_APP_NAME,
         win: {
           icon: './src/assets/extra/icon.ico',
         },

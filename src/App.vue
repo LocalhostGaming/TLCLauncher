@@ -117,6 +117,7 @@
 <script>
 import user from '@/utils/user';
 import discord from '@/utils/discord';
+import fivem from '@/utils/fivem';
 
 import Auth from './components/Auth.vue';
 import Blogs from './components/Blogs.vue';
@@ -212,7 +213,7 @@ export default {
       if (this.user) {
         user.play()
           .then(() => {
-            window.location.href = 'fivem://connect/rp.localhostgaming.com';
+            fivem.connect();
             window.minimizeToTrayCurrentWindow();
 
             this.process = setInterval(() => {

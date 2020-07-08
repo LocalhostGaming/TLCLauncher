@@ -1,7 +1,7 @@
 import Axios from 'axios';
 
 const axios = Axios.create({
-  baseURL: 'https://dev-tlc-api.localhostgaming.com/api/',
+  baseURL: process.env.VUE_APP_BASE_URL,
 });
 
 axios.interceptors.request.use(
