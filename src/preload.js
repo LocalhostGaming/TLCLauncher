@@ -126,7 +126,10 @@ window.fivemProcess = async () => {
 remote.app.on('second-instance', (event, CommandLine, workingDirectory) => {
   const commandLine = CommandLine;
 
-  currWindow.focus()
+  if (currWindow) {
+    if (currWindow.isMinimized()) currWindow.restore();
+    currWindow.focus();
+  }
 
   const url = commandLine.filter((value) => {
     const arr = value.split(':');
