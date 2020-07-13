@@ -68,6 +68,7 @@ div.lost-input {
     transition: border 0.2s;
     border-radius: size(componentBorderRadius);
     font-size: 13px;
+    font-family: font(primary);
 
     &:focus {
       border: solid 1px color(primary);

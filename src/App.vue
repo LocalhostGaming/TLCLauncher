@@ -291,7 +291,7 @@ export default {
 
 <style lang="scss" scoped>
 #app {
-  font-family: 'Poppins';
+  font-family: font(primary);
   display: inline-flex;
   /* border-radius: 8px; */
   background: lighten(color(dark), 0.5%);
@@ -595,7 +595,6 @@ export default {
         bottom: 0;
         right: 5px;
         color: color(disabled);
-        font-family: 'Poppins';
 
         span {
           font-size: 13px;

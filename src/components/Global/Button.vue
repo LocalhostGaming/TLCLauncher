@@ -30,6 +30,7 @@ button.lost-button {
   border: solid 1px lighten(color(disabled), 20%);
   border-radius: size(componentBorderRadius);
   color: rgb(34, 34, 34);
+  font-family: font(primary);
 
   .loading {
     margin-top: 4px;

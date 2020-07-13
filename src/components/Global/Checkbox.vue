@@ -30,7 +30,6 @@ div.lost-checkbox{
   cursor: pointer;
   color: color(light);
   font-size: 13px;
-  font-family: 'Poppins';
 
   &:hover {
     .checkmark {

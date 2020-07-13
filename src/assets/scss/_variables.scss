@@ -23,9 +23,18 @@ $size: (
     containerWidth: calc(420px - 18px),
     containerHeight: calc(650px - 24px),
 
-    componentBorderRadius: 3px,
+    componentBorderRadius: 2px,
 );
 
 @function size($size-name) {
     @return map-get($size, $size-name);
+};
+
+$fonts: (
+    primary: 'Poppins',
+    title: 'Portico'
+);
+
+@function font($font-name) {
+    @return map-get($fonts, $font-name);
 };
