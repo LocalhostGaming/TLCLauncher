@@ -128,7 +128,7 @@ export default {
   .blogs {
     height: 100%;
     width: 100%;
-    padding: 0 18px;
+    padding: 0 16px;
     padding-top: 24px;
     /* background: color(dark-lighter); */
 
@@ -150,14 +150,11 @@ export default {
 
     .header {
       width: 100%;
-      height: 45px;
+      height: 36px;
       position: relative;
       font-weight: 700;
       color: color(text);
-      display: flex;
-      flex-flow: column;
-      align-items: center;
-      justify-content: center;
+      padding-left: 6px;
 
       p {
         font-weight: 600;
@@ -166,23 +163,16 @@ export default {
         bottom: 0;
         z-index: 1;
       }
-
-      span {
-        color: darken(color(dark-lighter), 7%);
-        position: absolute;
-        font-size: 38px;
-      }
     }
 
     .lists {
-      margin-top: 8px;
       -webkit-app-region: no-drag;
 
       .blog {
         position: relative;
 
         .main {
-          padding: 6px;
+          padding: 8px;
           border-radius: 2px;
           cursor: pointer;
           transition: background 0.2s;
@@ -235,7 +225,7 @@ export default {
         .secondary {
           margin-bottom: 4px;
           display: flex;
-          padding: 6px;
+          padding: 8px;
           border-radius: 2px;
           cursor: pointer;
 
@@ -289,8 +279,8 @@ export default {
               margin-top: 4px;
               color: color(text);
               font-size: 13px;
-              line-height: 1.3;
-              letter-spacing: 0.8px;
+              line-height: 1.2;
+              letter-spacing: 0.6px;
             }
           }
         }

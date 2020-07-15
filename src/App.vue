@@ -102,7 +102,7 @@
 
       <!-- Background Overlay -->
       <div class="bg-overlay" v-if="!devBlogs">
-        <img src="@/assets/img/text-bg2.svg" svg-inline alt="">
+        <img src="@/assets/img/text-bg.svg" svg-inline alt="">
       </div>
 
       <Blogs @blogs="onDevBlogs"></Blogs>
@@ -339,7 +339,7 @@ export default {
         top: 6px;
         z-index: 1;
         font-size: 13px;
-        transition: opacity 0.5s ease-in-out;
+        transition: opacity 0.2s ease-in-out;
 
         .signout {
           color: color(text);
@@ -376,7 +376,7 @@ export default {
         justify-content: center;
 
         .wrapper {
-          transition: opacity 0.5s ease-in-out, transform 0.2s;
+          transition: opacity 0.2s ease-in-out, transform 0.2s;
           display: flex;
           cursor: pointer;
 
@@ -402,7 +402,7 @@ export default {
           color: color(text);
           text-align: center;
           font-size: 16px;
-          transition: opacity 0.5s ease-in-out;
+          transition: opacity 0.2s ease-in-out;
 
           .name {
             font-weight: 700;
@@ -521,7 +521,7 @@ export default {
           }
 
           svg {
-            transition: all 0.5s;
+            transition: all 0.2s;
             top: 65%;
             left: 54%;
             transform: translate(-50%, -50%);
@@ -579,7 +579,7 @@ export default {
           height: 100%;
           outline: none;
           position: absolute;
-          margin-left: 20px;
+          // margin-left: 20px;
         }
       }
 
@@ -607,11 +607,11 @@ export default {
   }
 
   .fade-enter-active {
-    transition: opacity .5s;
-    transition-delay: 0.8s;
+    transition: opacity .2s;
+    transition-delay: 0.5s;
   }
   .fade-leave-active {
-    transition: opacity .5s;
+    transition: opacity .2s;
   }
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
