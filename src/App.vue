@@ -176,59 +176,81 @@ export default {
     },
 
     async checkUserSession() {
-      await user.me()
-        .then((response) => {
-          // to show loading
-          this.auth = false;
+      try {
+        this.discord.alert = false;
 
-          // Check if there is discord account linked
-          discord.me()
-            .then(() => {
-              this.user = response.data;
-              this.loadingStatus = 'Welcome';
+        const { data: userData } = await user.me();
 
-              setTimeout(() => {
-                this.onPlay();
-              }, 2000);
-            })
-            .catch((err) => {
-              if (err.response.data.statusCode === 404) {
-                this.discord.alert = 'You need to link your Discord Account first.';
-              }
-            });
-        })
-        .catch((error) => {
-          const status = error.response.data.statusCode;
-          if (status === 401) this.onAuth();
-        });
+        this.auth = false;
+
+        // Check if there is discord account linked
+        await discord.me();
+
+        this.user = userData;
+        this.loadingStatus = 'Welcome';
+
+        setTimeout(() => {
+          this.onPlay();
+        }, 2000);
+      } catch (error) {
+        const { data } = error.response;
+        const { statusCode } = data;
+
+        if (statusCode === 404) {
+          this.discord.alert = 'You need to link your Discord Account first.';
+        }
+
+        if (statusCode === 401) this.onAuth();
+      }
+      // await user.me()
+      //   .then((response) => {
+      //     // to show loading
+      //     this.auth = false;
+
+      //     // Check if there is discord account linked
+      //     discord.me()
+      //       .then(() => {
+      //         this.user = response.data;
+      //         this.loadingStatus = 'Welcome';
+
+      //         setTimeout(() => {
+      //           this.onPlay();
+      //         }, 2000);
+      //       })
+      //       .catch((err) => {
+      //         if (err.response.data.statusCode === 404) {
+      //           this.discord.alert = 'You need to link your Discord Account first.';
+      //         }
+      //       });
+      //   })
+      //   .catch((error) => {
+      //     const status = error.response.data.statusCode;
+      //     if (status === 401) this.onAuth();
+      //   });
     },
 
     connectToServer() {
-      try {
-        this.checkUserSession();
-      } catch (e) {
-        window.ERROR(e);
-      }
-
       if (this.user) {
-        user.play()
-          .then(() => {
-            fivem.connect();
-            window.minimizeToTrayCurrentWindow();
+        try {
+          this.checkUserSession();
 
-            this.process = setInterval(() => {
-              window.fivemProcess()
-                .then((result) => {
-                  if (result.length === 0) {
-                    window.showCurrentWindow(this.process);
-                  }
-                });
-            }, 1000);
-          })
-          .catch((error) => {
-            window.ERROR(error);
-          });
+          fivem.connect();
+          window.minimizeCurrentWindow();
+        } catch (e) {
+          window.ERROR(e);
+        }
       }
+
+      // if (this.user) {
+      //   user.play()
+      //     .then(() => {
+      //       fivem.connect();
+      //       window.minimizeCurrentWindow();
+      //     })
+      //     .catch((error) => {
+      //       window.ERROR(error);
+      //     });
+      // }
     },
 
     linkDiscord() {

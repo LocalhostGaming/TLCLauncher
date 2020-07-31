@@ -9,8 +9,7 @@ import discord from '@/utils/discord';
 
 const currWindow = remote.BrowserWindow.getFocusedWindow();
 
-window.showCurrentWindow = (interval) => {
-  clearInterval(interval)
+window.showCurrentWindow = () => {
   currWindow.show();
   currWindow.focus();
 }
