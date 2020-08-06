@@ -9,7 +9,7 @@
       <div class="play__button__container">
         <div class="play__button">
           <!-- Play Button -->
-          <img src="@/assets/images/playbutton.svg" svg-inline alt="" @click="play">
+          <img src="@/assets/images/playbutton.svg" svg-inline alt="" @click="play('citizen')">
           <!-- User Citizen -->
           <p class="play__button__citizen">
             <span>as</span>
@@ -19,7 +19,7 @@
       </div>
       <div class="play__bottom">
         <p class="play__bottom__dev" v-if="user.role === 'DEV'">
-          <lost-link @click="playDev">
+          <lost-link @click="play('dev')">
             CONNECT ON LOCALHOST
           </lost-link>
         </p>
@@ -65,26 +65,17 @@ export default {
     interval: null,
   }),
   methods: {
-    async play() {
+    async play(role) {
       // Authenticate first
       try {
         await axios.post('/play/token');
 
-        window.location.href = `fivem://connect/${process.env.VUE_APP_FIVEM_SERVER}`;
-        currentWindow.minimize();
-      } catch (error) {
-        const { status } = error.response;
-        if (status === 401) {
-          this.$emit('signout');
+        if (role === 'dev') {
+          window.location.href = 'fivem://connect/localhost';
+        } else {
+          window.location.href = `fivem://connect/${process.env.VUE_APP_FIVEM_SERVER}`;
         }
-        console.error(error.message);
-      }
-    },
-    async playDev() {
-      try {
-        await axios.post('/play/token');
 
-        window.location.href = 'fivem://connect/localhost';
         currentWindow.minimize();
       } catch (error) {
         const { status } = error.response;
