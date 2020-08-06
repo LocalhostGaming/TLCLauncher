@@ -11,6 +11,7 @@
       </div>
     </div>
     <!-- Logo Here -->
+    <div class="header__logo__shadow"></div>
     <img class="header__logo" src="@/assets/images/logo.svg" svg-inline alt="">
   </div>
 </template>
@@ -40,6 +41,17 @@ export default {
     margin: 30px;
     width: 300px;
     outline: none;
+    position: absolute;
+    z-index: 1;
+
+    &__shadow {
+      position: absolute;
+      background: darken(color(dark-lighter), 8%);
+      margin: 16px;
+      width: 54px;
+      height: 80px;
+      z-index: 0;
+    }
   }
 
   &__titlebar{
