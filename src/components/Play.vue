@@ -80,9 +80,19 @@ export default {
         console.error(error.message);
       }
     },
-    playDev() {
-      window.location.href = 'fivem://connect/localhost';
-      currentWindow.minimize();
+    async playDev() {
+      try {
+        await axios.post('/play/token');
+
+        window.location.href = 'fivem://connect/localhost';
+        currentWindow.minimize();
+      } catch (error) {
+        const { status } = error.response;
+        if (status === 401) {
+          this.$emit('signout');
+        }
+        console.error(error.message);
+      }
     },
   },
   mounted() {
