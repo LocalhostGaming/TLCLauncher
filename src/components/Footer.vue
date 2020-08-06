@@ -12,7 +12,7 @@
 
     <!-- Version and Localhost -->
     <div class="footer__detail">
-      <p class="footer__detail__version">VERSION 2.0</p>
+      <p class="footer__detail__version">VERSION {{version}}</p>
       <p class="footer__detail__company">
         POWERED BY
         <span>LOCALHOST GAMING</span>
@@ -22,11 +22,18 @@
 </template>
 
 <script>
+import pjson from '../../package.json';
+
 export default {
   name: 'Footer',
   props: {
     launcherState: {
       type: String,
+    },
+  },
+  computed: {
+    version() {
+      return pjson.version;
     },
   },
 };
