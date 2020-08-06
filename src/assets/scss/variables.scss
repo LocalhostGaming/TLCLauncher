@@ -1,0 +1,41 @@
+$colors: (
+    primary: rgb(255, 112, 35),
+    primary-light: rgb(252, 148, 36),
+    warning: rgb(255, 147, 31),
+    error: rgb(219, 57, 57),
+    success: rgb(39, 184, 95),
+    info: rgb(56, 170, 252),
+    discord: rgb(114,137,218),
+    dark: rgb(32, 32, 32),
+    dark-lighter: rgb(59, 59, 59),
+    light: rgb(243, 243, 243),
+    disabled: rgb(189, 189, 189),
+    text: rgb(243, 243, 243),
+);
+
+@function color($color-name) {
+    @return map-get($colors, $color-name);
+};
+
+$size: (
+    windowWidth: 800px,
+    windowHeigth: 650px,
+
+    containerWidth: calc(420px - 18px),
+    containerHeight: calc(650px - 24px),
+
+    componentBorderRadius: 2px,
+);
+
+@function size($size-name) {
+    @return map-get($size, $size-name);
+};
+
+$fonts: (
+    primary: 'Poppins',
+    title: 'Portico'
+);
+
+@function font($font-name) {
+    @return map-get($fonts, $font-name);
+};
