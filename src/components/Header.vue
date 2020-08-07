@@ -37,21 +37,12 @@ export default {
 
 <style lang="scss" scoped>
 .header {
+  -webkit-app-region: no-drag;
+
   &__logo {
     margin: 30px;
     width: 300px;
     outline: none;
-    position: absolute;
-    z-index: 1;
-
-    &__shadow {
-      position: absolute;
-      background: darken(color(dark-lighter), 8%);
-      margin: 16px;
-      width: 54px;
-      height: 80px;
-      z-index: 0;
-    }
   }
 
   &__titlebar{
@@ -62,7 +53,6 @@ export default {
     border-radius: 2px;
     overflow: hidden;
     z-index: 1;
-    -webkit-app-region: no-drag;
     margin: 10px;
 
     div {
