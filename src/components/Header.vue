@@ -37,8 +37,6 @@ export default {
 
 <style lang="scss" scoped>
 .header {
-  -webkit-app-region: no-drag;
-
   &__logo {
     margin: 30px;
     width: 300px;
@@ -46,6 +44,7 @@ export default {
   }
 
   &__titlebar{
+    -webkit-app-region: no-drag;
     position: absolute;
     right: 0;
     top:  0;
