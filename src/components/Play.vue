@@ -3,7 +3,6 @@
     <div class="play" v-if="user">
       <img
         class="background"
-        :style="`transform: translateX(-${bg}%)`"
         src="@/assets/images/background.png"
         alt="">
       <div class="play__button__container">
@@ -59,11 +58,6 @@ export default {
       type: Object,
     },
   },
-  data: () => ({
-    bg: 33,
-    operator: 'subract',
-    interval: null,
-  }),
   methods: {
     async play(role) {
       // Authenticate first
@@ -86,26 +80,6 @@ export default {
       }
     },
   },
-  mounted() {
-    this.interval = setInterval(() => {
-      if (this.bg >= 33) {
-        this.operator = 'subract';
-      }
-
-      if (this.bg <= 0) {
-        this.operator = 'add';
-      }
-
-      if (this.operator === 'add') {
-        this.bg += 0.02;
-      } else {
-        this.bg -= 0.02;
-      }
-    }, 50);
-  },
-  destroyed() {
-    clearInterval(this.interval);
-  },
 };
 </script>
 
@@ -120,10 +94,19 @@ export default {
     position: absolute;
     z-index: -1;
     height: 100%;
-    // transform: translateX(-33%);
+    animation: slide 40s linear 0s alternate infinite none running;
 
     svg {
       height: 100%;
+    }
+  }
+
+  @keyframes slide {
+    0% {
+      transform: translateX(-33%);
+    }
+    100% {
+      transform: translate(0%);
     }
   }
 
