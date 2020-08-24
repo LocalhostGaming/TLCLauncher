@@ -138,6 +138,7 @@ export default {
 
         this.launcherState = 'play';
       } catch (error) {
+        this.launcherState = 'auth';
         console.error(error);
       }
     },
@@ -183,16 +184,13 @@ export default {
 
     async checkUserToken() {
       try {
+        // Check if authorized
+        await axios.get('/users/me');
+      } catch (error) {
         const tempPath = remote.app.getPath('temp');
         const filePath = path.join(tempPath, 'tlc.json');
 
-        const userToken = await file.read(filePath);
-
-        if (!('token' in userToken)) {
-          throw new Error('Invalid user access token.');
-        }
-      } catch (error) {
-        this.onSignout();
+        await file.remove(filePath);
         throw new Error(error);
       }
     },
