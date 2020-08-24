@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="play__bottom">
-        <p class="play__bottom__dev" v-if="user.role === 'DEV'">
+        <p class="play__bottom__dev" v-if="user.role === 'ADMIN'">
           <lost-link @click="play('dev')">
             CONNECT ON LOCALHOST
           </lost-link>
