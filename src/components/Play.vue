@@ -62,7 +62,7 @@ export default {
     async play(role) {
       // Authenticate first
       try {
-        await axios.post('/play/token');
+        await axios.post('/sessions/play/token');
 
         if (role === 'dev') {
           window.location.href = 'fivem://connect/localhost';
