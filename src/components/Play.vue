@@ -62,6 +62,8 @@ export default {
     async play(role) {
       // Authenticate first
       try {
+        currentWindow.minimize();
+
         await axios.post('/sessions/play/token');
 
         if (role === 'dev') {
@@ -69,8 +71,6 @@ export default {
         } else {
           window.location.href = `fivem://connect/${process.env.VUE_APP_FIVEM_SERVER}`;
         }
-
-        currentWindow.minimize();
       } catch (error) {
         const { status } = error.response;
         if (status === 401) {
