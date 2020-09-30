@@ -1,4 +1,4 @@
-# launcherv2
+# The Lost City: Launcher v2
 
 ## Project setup
 ```
