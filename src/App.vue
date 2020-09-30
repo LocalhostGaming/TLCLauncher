@@ -138,6 +138,10 @@ export default {
 
         this.launcherState = 'play';
       } catch (error) {
+        if (error.message === 'discord-error') {
+          this.launcherState = 'discord';
+          return;
+        }
         this.launcherState = 'auth';
         console.error(error);
       }
@@ -177,8 +181,7 @@ export default {
         const { data } = await axios.get('/profile/integrations/discord');
         return data;
       } catch (error) {
-        this.launcherState = 'discord';
-        throw new Error(error);
+        throw new Error('discord-error');
       }
     },
 
